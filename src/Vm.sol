@@ -115,6 +115,10 @@ interface VmSafe {
         bool reverted;
     }
 
+    struct OpcodeAccess {
+        uint8 opcode;
+    }
+
     // ======== EVM  ========
 
     // Gets the address for a given private key
@@ -824,4 +828,10 @@ interface Vm is VmSafe {
 
     // Marks a test as skipped. Must be called at the top of the test.
     function skip(bool skipTest) external;
+
+    /// Records all opcodes during the run.
+    function startOpcodeRecording() external;
+
+    /// Returns the recorded opcodes during the run
+    function stopAndReturnOpcodeRecording() external returns (OpcodeAccess[] memory opcodes);
 }
