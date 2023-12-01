@@ -118,6 +118,7 @@ interface VmSafe {
     struct OpcodeAccess {
         uint8 opcode;
         uint256[] stackInputs;
+        uint64 depth;
     }
 
     // ======== EVM  ========
