@@ -115,10 +115,19 @@ interface VmSafe {
         bool reverted;
     }
 
-    struct OpcodeAccess {
+    /// The result of the `stopAndReturnDebugTraceRecording` call
+    struct DebugStep {
+        /// The stack on the step of the run.
+        uint256[] stack;
+        /// The memory data on the step of the run.
+        uint8[] memoryData;
+        /// The opcode that was accessed.
         uint8 opcode;
-        uint256[] stackInputs;
+        /// The call depth of the step.
         uint64 depth;
+        /// The instruction result.
+        /// see: https://github.com/bluealloy/revm/blob/5a47ae0d2bb0909cc70d1b8ae2b6fc721ab1ca7d/crates/interpreter/src/instruction_result.rs#L6-L50.
+        uint8 instructionResult;
     }
 
     // ======== EVM  ========
@@ -831,9 +840,11 @@ interface Vm is VmSafe {
     // Marks a test as skipped. Must be called at the top of the test.
     function skip(bool skipTest) external;
 
-    /// Records all opcodes during the run.
-    function startOpcodeRecording() external;
+    // -------- Record Debug Traces --------
 
-    /// Returns the recorded opcodes during the run
-    function stopAndReturnOpcodeRecording() external returns (OpcodeAccess[] memory opcodes);
+    /// Records the debug trace during the run.
+    function startDebugTraceRecording() external;
+
+    /// Returns the recorded debug trace during the run and stop recording.
+    function stopAndReturnDebugTraceRecording() external returns (DebugStep[] memory steps);
 }
