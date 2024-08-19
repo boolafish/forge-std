@@ -847,6 +847,9 @@ interface Vm is VmSafe {
     /// Records the debug trace during the run.
     function startDebugTraceRecording() external;
 
-    /// Returns the recorded debug trace during the run and stop recording.
-    function stopAndReturnDebugTraceRecording() external returns (DebugStep[] memory steps);
+    /// Stop debug trace recording and returns the total size of the recorded debug trace.
+    function stopDebugTraceRecording() external returns (uint256 size);
+
+    /// Get the recorded debug trace by its step index.
+    function getDebugTraceByIndex(uint256 index) external returns (DebugStep memory step);
 }
